@@ -96,6 +96,8 @@ for audio_file in audio_files:
 #print('------------')
 #print('Here is your playlist:')
 playlist = list(set(songs))
+
+#playlist = ['Rock Star - Poser (Electronic Version) - N.E.R.D', 'You & I (deadmau5 Remix) - Medina', 'No! (Extended Mix) - Cid', 'Rock With You - Michael Jackson', 'This Is America (Pioneer66 Unofficial Remix) [Mixed] - Childish Gambino', 'Running Wild (feat. PollyAnna) - Yves V & Futuristic Polar Bears', 'Helicopter (feat. Peaches) [Weird Science ReHelicopter (feat. Peaches) - Bloc Party', 'Back & Forth (MK Dub) - MK, Jonas Blue & Becky Hill', "Don't Stop 'Til You Get Enough - Michael Jackson", 'Slingshot - Sonny Bass & Timmo Hendriks', 'Piece Piece Piece (feat. Yeah Boy) - 3LAU', 'The Way You Make Me Feel - Michael Jackson', 'Cola (Tom Staar Bootleg) - CamelphaCola (Tom Staar Bootleg) - CamelphaCola (Tom Sta', 'Would You Ever - Skrillex & Poo Bear', 'This Is AmThis Is Am', 'Falling Away (feat. Lights) [Festival Mix] - Seven Lions', 'on) - N.E.R.D', 'You & I (deadmau5 Remix) - MedinaYou & I (deadmau5 Remix)', "Piece of Me (Extended Mix) - MK & Becky Hill", 'ct Strangers (Mixed) - ARTY', 'Like I Do - David Guetta, Martin Garrix & Brooks', 'Begin Again - KnifBegin Again - Knif', 'No! (Extended Mix)', 'Make Your Mind Up (feat. Moses York) [Axwell & New_Id Extended Remode] - Pauls Paris', 'Redbone - Childish Gambino', 'n Lions', 'r Bears', 'Alive - Krewella', "Don't Stop 'Til You Get Enough - Michael Jackson", 'Up All Night (feat. Fiora) - R3HAB & MOTi', 'Cola (Tom Staar Bootleg) - Camelphat & Elderbrook']
 #for music in playlist:
 #    print(music)
 
@@ -118,7 +120,7 @@ SPOTIPY_CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
 SPOTIPY_REDIRECT_URI = os.getenv('SPOTIFY_REDIRECT_URI')
 
 # set your Spotify username and playlist name
-username = 'jayhxmo'
+username = os.getenv('SPOTIFY_USERNAME')
 
 # set the song names
 song_names = playlist
@@ -141,10 +143,14 @@ if response.lower() in ['y', '']:
     track_ids = []
     for song in song_names:
         result = sp.search(q=song, limit=1)
-        track_id = result['tracks']['items'][0]['id']
-        track_ids.append(track_id)
+        try:
+            track_id = result['tracks']['items'][0]['id']
+            track_ids.append(track_id)
+        except:
+            continue
 
     # add tracks to the playlist
     sp.playlist_add_items(playlist_id, track_ids)
+
     print('\nDone!')
     print('Enjoy :)')
